@@ -10,21 +10,62 @@ import { SideNavItem } from '@/types';
 import { Icon } from '@iconify/react';
 
 const SideNav = () => {
-  return (
-    <div className="md:w-60 bg-white h-screen flex-1 fixed border-r border-zinc-200 hidden md:flex">
-      <div className="flex flex-col space-y-6 w-full">
-        <Link
-          href="/"
-          className="flex flex-row space-x-3 items-center justify-center md:justify-start md:px-6 border-b border-zinc-200 h-12 w-full"
-        >
-          <span className="h-7 w-7 bg-zinc-300 rounded-lg" />
-          <span className="font-bold text-xl hidden md:flex">Logo</span>
-        </Link>
+  const [isExpanded, setIsExpanded] = useState(false);
+  const pathname = usePathname();
 
-        <div className="flex flex-col space-y-2  md:px-6 ">
-          {SIDENAV_ITEMS.map((item, idx) => {
-            return <MenuItem key={idx} item={item} />;
-          })}
+  return (
+    <div 
+      className="fixed left-4 top-1/2 transform -translate-y-1/2 z-50 hidden md:flex"
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
+    >
+      <div className={`bg-floral_white border-2 border-lavender rounded-2xl shadow-2xl transition-all duration-300 ease-in-out ${
+        isExpanded ? 'p-6 w-60' : 'p-4 w-16'
+      }`}>
+        <div className="flex flex-col space-y-6 w-full">
+          {/* Logo Section */}
+          <Link
+            href="/"
+            className={`flex flex-row items-center transition-all duration-300 ${
+              isExpanded 
+                ? 'space-x-3 justify-center border-b border-lavender-400 pb-4 mb-2' 
+                : 'justify-center'
+            }`}
+          >
+            <span className="h-8 w-8 bg-blush rounded-lg flex-shrink-0" />
+            <span className={`font-bold text-xl text-dark_purple transition-all duration-300 overflow-hidden ${
+              isExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'
+            }`}>
+              BESS
+            </span>
+          </Link>
+
+          {/* Navigation Items */}
+          <div className={`flex flex-col transition-all duration-300 ${
+            isExpanded ? 'space-y-3 opacity-100' : 'space-y-0 opacity-0'
+          }`}>
+            {isExpanded && SIDENAV_ITEMS.map((item, idx) => {
+              return <MenuItem key={idx} item={item} isExpanded={isExpanded} />;
+            })}
+          </div>
+          
+          {/* Collapsed Navigation Icons */}
+          {!isExpanded && (
+            <div className="flex flex-col items-center space-y-3">
+              {SIDENAV_ITEMS.map((item, idx) => (
+                <Link
+                  key={idx}
+                  href={item.path}
+                  className={`p-2 rounded-lg hover:bg-lavender-700 transition-colors ${
+                    usePathname() === item.path ? 'bg-lavender-600 text-blush' : 'text-dark_purple'
+                  }`}
+                  title={item.title}
+                >
+                  {item.icon}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -33,12 +74,14 @@ const SideNav = () => {
 
 export default SideNav;
 
-const MenuItem = ({ item }: { item: SideNavItem }) => {
+const MenuItem = ({ item, isExpanded }: { item: SideNavItem; isExpanded: boolean }) => {
   const pathname = usePathname();
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   const toggleSubMenu = () => {
     setSubMenuOpen(!subMenuOpen);
   };
+
+  if (!isExpanded) return null;
 
   return (
     <div className="">
@@ -46,13 +89,13 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
         <>
           <button
             onClick={toggleSubMenu}
-            className={`flex flex-row items-center p-2 rounded-lg hover-bg-zinc-100 w-full justify-between hover:bg-zinc-100 ${
-              pathname.includes(item.path) ? 'bg-zinc-100' : ''
+            className={`flex flex-row items-center p-2 rounded-lg hover:bg-lavender-700 w-full justify-between text-dark_purple transition-colors ${
+              pathname.includes(item.path) ? 'bg-lavender-600 text-blush' : ''
             }`}
           >
             <div className="flex flex-row space-x-4 items-center">
               {item.icon}
-              <span className="font-semibold text-xl  flex">{item.title}</span>
+              <span className="font-semibold text-xl flex">{item.title}</span>
             </div>
 
             <div className={`${subMenuOpen ? 'rotate-180' : ''} flex`}>
@@ -67,8 +110,8 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
                   <Link
                     key={idx}
                     href={subItem.path}
-                    className={`${
-                      subItem.path === pathname ? 'font-bold' : ''
+                    className={`text-dark_purple-300 hover:text-blush transition-colors ${
+                      subItem.path === pathname ? 'font-bold text-blush' : ''
                     }`}
                   >
                     <span>{subItem.title}</span>
@@ -81,8 +124,8 @@ const MenuItem = ({ item }: { item: SideNavItem }) => {
       ) : (
         <Link
           href={item.path}
-          className={`flex flex-row space-x-4 items-center p-2 rounded-lg hover:bg-zinc-100 ${
-            item.path === pathname ? 'bg-zinc-100' : ''
+          className={`flex flex-row space-x-4 items-center p-2 rounded-lg hover:bg-lavender-700 text-dark_purple transition-colors ${
+            item.path === pathname ? 'bg-lavender-600 text-blush' : ''
           }`}
         >
           {item.icon}
