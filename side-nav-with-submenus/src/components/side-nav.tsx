@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -8,10 +8,41 @@ import { usePathname } from 'next/navigation';
 import { SIDENAV_ITEMS } from '@/constants';
 import { SideNavItem } from '@/types';
 import { Icon } from '@iconify/react';
+import DynamicMenuItem from './dynamic-menu-item';
+
+interface Supplier {
+  _id: string;
+  name: string;
+  slug: { current: string };
+  description?: string;
+  website?: string;
+}
 
 const SideNav = () => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
   const pathname = usePathname();
+
+  // Fetch suppliers on component mount
+  useEffect(() => {
+    const fetchSuppliers = async () => {
+      try {
+        console.log('Fetching suppliers for navigation...');
+        const response = await fetch('/api/suppliers');
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Suppliers fetched for navigation:', data);
+          setSuppliers(data);
+        } else {
+          console.error('Failed to fetch suppliers:', response.status);
+        }
+      } catch (error) {
+        console.error('Error fetching suppliers for navigation:', error);
+      }
+    };
+
+    fetchSuppliers();
+  }, []);
 
   return (
     <div 
@@ -20,7 +51,7 @@ const SideNav = () => {
       onMouseLeave={() => setIsExpanded(false)}
     >
       <div className={`bg-floral_white border-2 border-lavender rounded-2xl shadow-2xl transition-all duration-300 ease-in-out ${
-        isExpanded ? 'p-6 w-60' : 'p-4 w-16'
+        isExpanded ? 'p-6 w-72' : 'p-4 w-16'
       }`}>
         <div className="flex flex-col space-y-6 w-full">
           {/* Logo Section */}
@@ -32,12 +63,22 @@ const SideNav = () => {
                 : 'justify-center'
             }`}
           >
-            <span className="h-8 w-8 bg-blush rounded-lg flex-shrink-0" />
-            <span className={`font-bold text-xl text-dark_purple transition-all duration-300 overflow-hidden ${
-              isExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'
+            <div className={`flex items-center space-x-3 bg-blush text-white px-3 py-2 rounded-lg transition-all duration-300 ${
+              isExpanded ? 'w-auto' : 'w-12 h-12 justify-center px-2 py-2'
             }`}>
-              BESS
-            </span>
+              <img 
+                src="/LOGO_BB2.jpeg" 
+                alt="BESS't IN CLASS Logo" 
+                className="h-6 w-6 object-contain flex-shrink-0" 
+              />
+              <span className={`font-bold text-lg transition-all duration-300 overflow-hidden whitespace-nowrap ${
+                isExpanded ? 'opacity-100 w-auto' : 'opacity-0 w-0'
+              }`}>
+                <span className="text-floral_white">BESS</span>
+                <span className="text-purple-700">'t</span>
+                <span className="text-floral_white"> IN CLASS</span>
+              </span>
+            </div>
           </Link>
 
           {/* Navigation Items */}
@@ -45,7 +86,7 @@ const SideNav = () => {
             isExpanded ? 'space-y-3 opacity-100' : 'space-y-0 opacity-0'
           }`}>
             {isExpanded && SIDENAV_ITEMS.map((item, idx) => {
-              return <MenuItem key={idx} item={item} isExpanded={isExpanded} />;
+              return <DynamicMenuItem key={idx} item={item} isExpanded={isExpanded} suppliers={suppliers} />;
             })}
           </div>
           
@@ -73,65 +114,3 @@ const SideNav = () => {
 };
 
 export default SideNav;
-
-const MenuItem = ({ item, isExpanded }: { item: SideNavItem; isExpanded: boolean }) => {
-  const pathname = usePathname();
-  const [subMenuOpen, setSubMenuOpen] = useState(false);
-  const toggleSubMenu = () => {
-    setSubMenuOpen(!subMenuOpen);
-  };
-
-  if (!isExpanded) return null;
-
-  return (
-    <div className="">
-      {item.submenu ? (
-        <>
-          <button
-            onClick={toggleSubMenu}
-            className={`flex flex-row items-center p-2 rounded-lg hover:bg-lavender-700 w-full justify-between text-dark_purple transition-colors ${
-              pathname.includes(item.path) ? 'bg-lavender-600 text-blush' : ''
-            }`}
-          >
-            <div className="flex flex-row space-x-4 items-center">
-              {item.icon}
-              <span className="font-semibold text-xl flex">{item.title}</span>
-            </div>
-
-            <div className={`${subMenuOpen ? 'rotate-180' : ''} flex`}>
-              <Icon icon="lucide:chevron-down" width="24" height="24" />
-            </div>
-          </button>
-
-          {subMenuOpen && (
-            <div className="my-2 ml-12 flex flex-col space-y-4">
-              {item.subMenuItems?.map((subItem, idx) => {
-                return (
-                  <Link
-                    key={idx}
-                    href={subItem.path}
-                    className={`text-dark_purple-300 hover:text-blush transition-colors ${
-                      subItem.path === pathname ? 'font-bold text-blush' : ''
-                    }`}
-                  >
-                    <span>{subItem.title}</span>
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </>
-      ) : (
-        <Link
-          href={item.path}
-          className={`flex flex-row space-x-4 items-center p-2 rounded-lg hover:bg-lavender-700 text-dark_purple transition-colors ${
-            item.path === pathname ? 'bg-lavender-600 text-blush' : ''
-          }`}
-        >
-          {item.icon}
-          <span className="font-semibold text-xl flex">{item.title}</span>
-        </Link>
-      )}
-    </div>
-  );
-};

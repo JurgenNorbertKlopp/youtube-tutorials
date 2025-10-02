@@ -10,24 +10,20 @@ export const SIDENAV_ITEMS: SideNavItem[] = [
   },
   {
     title: 'About',
-    path: '/about',
+    path: '/#about',
     icon: <Icon icon="lucide:info" width="24" height="24" />,
+  },
+  {
+    title: 'Blog',
+    path: '/blog',
+    icon: <Icon icon="lucide:edit-3" width="24" height="24" />,
   },
   {
     title: 'Suppliers',
     path: '/suppliers',
     icon: <Icon icon="lucide:folder" width="24" height="24" />,
     submenu: true,
-    subMenuItems: [
-      { title: 'All', path: '/suppliers' },
-      { title: 'Sungrow', path: '/suppliers/sungrow' },
-      { title: 'Tesla', path: '/suppliers/tesla' },
-    ],
-  },
-  {
-    title: 'Blog',
-    path: '/blog',
-    icon: <Icon icon="lucide:edit-3" width="24" height="24" />,
+    subMenuItems: [], // Will be populated dynamically
   },
   {
     title: 'Contact',

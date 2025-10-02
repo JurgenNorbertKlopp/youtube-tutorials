@@ -44,19 +44,16 @@ export async function getPost(slug: string) {
   `, { slug });
 }
 
-// Helper function to fetch all suppliers (if you create this schema later)
+// Helper function to fetch all suppliers
 export async function getSuppliers() {
-  return client.fetch(`
-    *[_type == "supplier"] | order(name asc) {
-      _id,
-      name,
-      slug,
-      description,
-      website,
-      "logoUrl": logo.asset->url,
-      "imageUrl": mainImage.asset->url
-    }
-  `);
+  return client.fetch(`*[_type == "supplier"] | order(name asc) {
+    _id,
+    _type,
+    description,
+    name,
+    slug,
+    website
+  }`);
 }
 
 // Helper function to fetch a single supplier by slug

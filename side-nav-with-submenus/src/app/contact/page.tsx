@@ -30,7 +30,7 @@ const contactData: ContactInfo = {
     {
       platform: "Twitter",
       url: "https://twitter.com/yourcompany",
-      icon: "lucide:twitter",
+      icon: "simple-icons:x",
       username: "@yourcompany"
     },
     {
@@ -45,131 +45,76 @@ const contactData: ContactInfo = {
 const ContactPage = () => {
   return (
     <>
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="font-bold text-4xl md:text-5xl text-dark_purple mb-4">
-            Get In Touch
-          </h1>
-          <p className="text-xl text-dark_purple-300 max-w-2xl mx-auto">
-            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
-          </p>
-        </div>
-
-        {/* Main Content */}
-        <div className="max-w-2xl mx-auto">
-          {/* Contact Information */}
-          <div className="space-y-8">
-            <div>
-              <h2 className="text-2xl font-bold text-dark_purple mb-6">
-                Contact Information
-              </h2>
-              
-              {/* Email */}
-              <div className="flex items-center space-x-4 mb-6 p-4 bg-floral_white border border-lavender rounded-lg hover:shadow-md transition-shadow">
-                <div className="flex-shrink-0 w-12 h-12 bg-blush-800 rounded-full flex items-center justify-center">
-                  <Icon icon="lucide:mail" className="text-blush text-xl" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-dark_purple">Email</h3>
-                  <a 
-                    href={`mailto:${contactData.email}`}
-                    className="text-dark_purple-300 hover:text-blush transition-colors"
-                  >
-                    {contactData.email}
-                  </a>
-                </div>
-              </div>
-
-              {/* Phone */}
-              <div className="flex items-center space-x-4 mb-6 p-4 bg-floral_white border border-lavender rounded-lg hover:shadow-md transition-shadow">
-                <div className="flex-shrink-0 w-12 h-12 bg-blush-800 rounded-full flex items-center justify-center">
-                  <Icon icon="lucide:phone" className="text-blush text-xl" />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-dark_purple">Phone</h3>
-                  <a 
-                    href={`tel:${contactData.phone}`}
-                    className="text-dark_purple-300 hover:text-blush transition-colors"
-                  >
-                    {contactData.phone}
-                  </a>
-                </div>
-              </div>
-
-              {/* Address */}
-              {contactData.address && (
-                <div className="flex items-center space-x-4 mb-6 p-4 bg-floral_white border border-lavender rounded-lg hover:shadow-md transition-shadow">
-                  <div className="flex-shrink-0 w-12 h-12 bg-blush-800 rounded-full flex items-center justify-center">
-                    <Icon icon="lucide:map-pin" className="text-blush text-xl" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-dark_purple">Address</h3>
-                    <p className="text-dark_purple-300">
-                      {contactData.address}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
-
-            {/* Social Media */}
-            <div>
-              <h2 className="text-2xl font-bold text-dark_purple mb-6">
-                Follow Us
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                {contactData.socials.map((social, index) => (
-                  <a
-                    key={index}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center space-x-3 p-4 bg-floral_white border border-lavender rounded-lg hover:shadow-md hover:border-blush transition-all group"
-                  >
-                    <Icon 
-                      icon={social.icon} 
-                      className="text-2xl text-dark_purple group-hover:text-blush transition-colors" 
-                    />
-                    <div>
-                      <div className="font-semibold text-dark_purple group-hover:text-blush transition-colors">
-                        {social.platform}
-                      </div>
-                      {social.username && (
-                        <div className="text-sm text-dark_purple-300">
-                          {social.username}
-                        </div>
-                      )}
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
+      <div 
+        className="min-h-screen -mx-8 -mt-8 md:-mx-24 flex items-center justify-center py-12"
+        style={{
+          backgroundImage: 'url(/bluemarble.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundAttachment: 'fixed'
+        }}
+      >
+        <div className="p-8 md:p-12 w-full mx-8 md:mx-24">
+          {/* Header */}
+          <div className="text-center mb-12">
+            <h1 className="font-bold text-4xl md:text-5xl text-white mb-0 drop-shadow-2xl" style={{textShadow: '4px 4px 8px rgba(0, 0, 0, 1), 2px 2px 4px rgba(0, 0, 0, 0.8), 1px 1px 2px rgba(0, 0, 0, 0.6)'}}>
+              Get In Touch
+            </h1>
           </div>
-        </div>
 
-        {/* Additional Info Section */}
-        <div className="mt-16 bg-gradient-to-r from-lavender to-floral_white border border-lavender rounded-lg p-8">
-          <div className="text-center">
-            <h3 className="text-2xl font-bold text-dark_purple mb-4">
-              Let's Start a Conversation
-            </h3>
-            <p className="text-dark_purple-300 max-w-3xl mx-auto mb-6">
-              Whether you have a question about our services, need support, or want to explore 
-              partnership opportunities, our team is ready to help you achieve your goals.
-            </p>
-            <div className="flex flex-wrap justify-center gap-6 text-sm text-dark_purple-400">
-              <div className="flex items-center space-x-2">
-                <Icon icon="lucide:clock" className="text-blush" />
-                <span>Response within 24 hours</span>
+          {/* Main Content */}
+          <div className="max-w-3xl mx-auto">
+            {/* Contact Information */}
+            <div className="space-y-8">
+              <div>
+                <div className="grid md:grid-cols-2 gap-6">
+                  {/* Email */}
+                  <div className="flex flex-col items-center text-center p-6 bg-floral_white border border-lavender rounded-lg hover:shadow-md transition-shadow">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blush-800 rounded-full flex items-center justify-center mb-4">
+                      <Icon icon="lucide:mail" className="text-blush text-xl" />
+                    </div>
+                    <a 
+                      href={`mailto:${contactData.email}`}
+                      className="text-dark_purple-300 hover:text-blush transition-colors"
+                    >
+                      {contactData.email}
+                    </a>
+                  </div>
+
+                  {/* Phone */}
+                  <div className="flex flex-col items-center text-center p-6 bg-floral_white border border-lavender rounded-lg hover:shadow-md transition-shadow">
+                    <div className="flex-shrink-0 w-12 h-12 bg-blush-800 rounded-full flex items-center justify-center mb-4">
+                      <Icon icon="lucide:phone" className="text-blush text-xl" />
+                    </div>
+                    <a 
+                      href={`tel:${contactData.phone}`}
+                      className="text-dark_purple-300 hover:text-blush transition-colors"
+                    >
+                      {contactData.phone}
+                    </a>
+                  </div>
+                </div>
               </div>
-              <div className="flex items-center space-x-2">
-                <Icon icon="lucide:shield-check" className="text-blush" />
-                <span>Secure & confidential</span>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Icon icon="lucide:users" className="text-blush" />
-                <span>Dedicated support team</span>
+
+              {/* Social Media */}
+              <div className="mt-12">
+                <div className="flex justify-center space-x-6">
+                  {contactData.socials.map((social, index) => (
+                    <a
+                      key={index}
+                      href={social.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center w-16 h-16 bg-black border-2 border-black rounded-full hover:shadow-xl hover:border-gray-600 transition-all duration-300 transform hover:scale-110 group"
+                      title={social.platform}
+                    >
+                      <Icon 
+                        icon={social.icon} 
+                        className="text-2xl text-white group-hover:text-gray-200 transition-colors" 
+                      />
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>

@@ -12,3 +12,8 @@ const TeslaPage = () => {
 };
 
 export default TeslaPage;
+    </>
+  );
+};
+
+export default TeslaPage;
